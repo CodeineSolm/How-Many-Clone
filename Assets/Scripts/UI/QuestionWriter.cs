@@ -1,24 +1,25 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 
-[RequireComponent(typeof(TextMeshProUGUI))]
 public class QuestionWriter : MonoBehaviour
 {
     [SerializeField] private float _timePerCharacter;
+    [SerializeField] private TextMeshProUGUI _questionTextField;
+    [SerializeField] private AnswerReader _answerReader;
 
-    private TextMeshProUGUI _questionField;
+    public event UnityAction Written;
+
     private List<Question> _questions = new List<Question>();
+    private string _questionText;
     private float _timer;
     private int _characterIndex;
-    private string _questionText;
+    private int _answer;
     private bool _isAllTextWriten;
-    private string _answerText;
 
     private void Start()
     {
-        _questionField = GetComponent<TextMeshProUGUI>();
         _characterIndex = 0;
         TakeQuestions();
         _isAllTextWriten = false;
@@ -26,7 +27,7 @@ public class QuestionWriter : MonoBehaviour
 
     private void Update()
     {
-        WriteQuestion();
+        WriteNext();
     }
 
     private void TakeQuestions()
@@ -40,7 +41,7 @@ public class QuestionWriter : MonoBehaviour
         _questions.Add(new Question("How many eyes do caterpillars have?", 12));
         _questions.Add(new Question("How many varieties of avocados are there?", 500));
         _questions.Add(new Question("How many children did pharaoh Ramses II father?", 160));
-        _questions.Add(new Question("How many degrees does the Earth rotate each hour?", 12));
+        _questions.Add(new Question("How many degrees does the Earth rotate each hour?", 15));
         _questions.Add(new Question("How many players make up a field hockey team?", 11));
     }
 
@@ -48,14 +49,14 @@ public class QuestionWriter : MonoBehaviour
     {
         if (_questions.Count != 0)
         {
-            int nextNumber = Random.Range(0, _questions.Count - 1);
+            int nextNumber = Random.Range(0, _questions.Count);
             _questionText = _questions[nextNumber].GetText();
-            _answerText = _questions[nextNumber].GetAnswer().ToString();
+            _answer = _questions[nextNumber].GetAnswer();
             _questions.RemoveAt(nextNumber);
         }
     }
 
-    private void WriteQuestion()
+    private void WriteNext()
     {
         GetNext();
 
@@ -69,14 +70,40 @@ public class QuestionWriter : MonoBehaviour
                 _characterIndex++;
                 string text = _questionText.Substring(0, _characterIndex);
                 text += "<color=#00000000>" + _questionText.Substring(_characterIndex) + "</color>";
-                _questionField.text = text;
+                _questionTextField.text = text;
 
                 if (_characterIndex >= _questionText.Length)
                 {
+                    Written?.Invoke();
                     _isAllTextWriten = true;
                     return;
                 }
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        _answerReader.SubmitButtonClicked += OnSubmitButtonClicked;
+    }
+
+    private void OnDisable()
+    {
+        _answerReader.SubmitButtonClicked -= OnSubmitButtonClicked;
+    }
+
+    private void OnSubmitButtonClicked(int playerAnswer)
+    {
+        Debug.Log("Your answer: " + playerAnswer);
+        _questionTextField.text = _answer.ToString();
+        CompareAnswers(playerAnswer);
+    }
+
+    private void CompareAnswers(int playerAnswer)
+    {
+        if (playerAnswer == _answer)
+            Debug.Log("Correct!");
+        else
+            Debug.Log("Incorrect!");
     }
 }
