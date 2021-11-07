@@ -6,7 +6,7 @@ using System;
 
 public class AnswerReader : MonoBehaviour
 {
-    [SerializeField] private QuestionWriter _questionWriter;
+    [SerializeField] private QuestionHandler _questionWriter;
     [SerializeField] private TMP_InputField _answerInputField;
     [SerializeField] private Button _submitButton;
     [SerializeField] private int _charactersLimit;
