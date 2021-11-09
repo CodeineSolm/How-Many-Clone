@@ -6,7 +6,7 @@ using System;
 
 public class AnswerReader : MonoBehaviour
 {
-    [SerializeField] private QuestionHandler _questionWriter;
+    [SerializeField] private QuestionHandler _questionHandler;
     [SerializeField] private TMP_InputField _answerInputField;
     [SerializeField] private Button _submitButton;
     [SerializeField] private int _charactersLimit;
@@ -29,15 +29,15 @@ public class AnswerReader : MonoBehaviour
 
     private void OnEnable()
     {
-        _questionWriter.Written += OnQuestionWriten;
+        _questionHandler.Written += OnQuestionWritten;
     }
 
     private void OnDisable()
     {
-        _questionWriter.Written -= OnQuestionWriten;
+        _questionHandler.Written -= OnQuestionWritten;
     }
 
-    private void OnQuestionWriten()
+    private void OnQuestionWritten()
     {
         Show();
     }

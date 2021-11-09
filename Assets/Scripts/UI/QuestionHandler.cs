@@ -8,7 +8,7 @@ public class QuestionHandler : MonoBehaviour
     [SerializeField] private float _timePerCharacter;
     [SerializeField] private TextMeshProUGUI _questionTextField;
     [SerializeField] private AnswerReader _answerReader;
-
+    
     public event UnityAction Written;
     public event UnityAction IncorrectAnswer;
 
@@ -16,7 +16,7 @@ public class QuestionHandler : MonoBehaviour
     private string _questionText;
     private float _timer;
     private int _characterIndex;
-    private int _answer;
+    private int _correctAnswer;
     private bool _isAllTextWriten;
 
     private void Start()
@@ -52,7 +52,7 @@ public class QuestionHandler : MonoBehaviour
         {
             int nextNumber = Random.Range(0, _questions.Count);
             _questionText = _questions[nextNumber].GetText();
-            _answer = _questions[nextNumber].GetAnswer();
+            _correctAnswer = _questions[nextNumber].GetAnswer();
             _questions.RemoveAt(nextNumber);
         }
     }
@@ -95,14 +95,13 @@ public class QuestionHandler : MonoBehaviour
 
     private void OnSubmitButtonClicked(int playerAnswer)
     {
-        Debug.Log("Your answer: " + playerAnswer);
-        _questionTextField.text = _answer.ToString();
+        _questionTextField.text = _correctAnswer.ToString();
         CompareAnswers(playerAnswer);
     }
 
     private void CompareAnswers(int playerAnswer)
     {
-        if (playerAnswer == _answer)
+        if (playerAnswer == _correctAnswer)
             Debug.Log("Correct!");
         else
             IncorrectAnswer?.Invoke();
