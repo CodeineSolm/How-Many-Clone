@@ -19,6 +19,7 @@ public class AnswerReader : MonoBehaviour
     {
         int playerAnswer = Convert.ToInt32(_answerInputField.text);
         SubmitButtonClicked?.Invoke(playerAnswer);
+        Debug.Log("Player answer: " + playerAnswer);
         Hide();
     }
 

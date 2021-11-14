@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a83d569df902e6140ab847dfa314baf0
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _TextureSample0: {fileID: 2800000, guid: 9fbef4b79ca3b784ba023cb1331520d5, type: 3}
+  userData: 
+  assetBundleName: base/shader/splashlow.unity3d
+  assetBundleVariant: 

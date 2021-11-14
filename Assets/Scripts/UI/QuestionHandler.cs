@@ -2,17 +2,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
+using System.Linq;
 
 public class QuestionHandler : MonoBehaviour
 {
     [SerializeField] private float _timePerCharacter;
     [SerializeField] private TextMeshProUGUI _questionTextField;
     [SerializeField] private AnswerReader _answerReader;
-    
+    [SerializeField] private List<Character> _characters = new List<Character>();
+
     public event UnityAction Written;
-    public event UnityAction IncorrectAnswer;
 
     private List<Question> _questions = new List<Question>();
+    private Dictionary<Character, int> _charactersAnswers = new Dictionary<Character, int>();
     private string _questionText;
     private float _timer;
     private int _characterIndex;
@@ -96,14 +98,19 @@ public class QuestionHandler : MonoBehaviour
     private void OnSubmitButtonClicked(int playerAnswer)
     {
         _questionTextField.text = _correctAnswer.ToString();
-        CompareAnswers(playerAnswer);
+
+        foreach (var character in _characters)
+        {
+            _charactersAnswers.Add(character, character.GetAnswer(_correctAnswer));
+        }
+        
+        CompareAnswers();
     }
 
-    private void CompareAnswers(int playerAnswer)
+    private void CompareAnswers()
     {
-        if (playerAnswer == _correctAnswer)
-            Debug.Log("Correct!");
-        else
-            IncorrectAnswer?.Invoke();
+        var result = _charactersAnswers.OrderByDescending(i => System.Math.Abs(i.Value - _correctAnswer)).Select(i => i.Key);
+        Character _farestAnswer = result.Last();
+        _farestAnswer.Drop();
     }
 }

@@ -1,22 +1,21 @@
-
 using UnityEngine;
 
 public class Player : Character
 {
-    [SerializeField] private QuestionHandler _questionHandler;
+    [SerializeField] private AnswerReader _answerReader;
 
     private void OnEnable()
     {
-        _questionHandler.IncorrectAnswer += OnIncorrectAnswer;
+        _answerReader.SubmitButtonClicked += OnSubmitButtonClick;
     }
 
     private void OnDisable()
     {
-        _questionHandler.IncorrectAnswer -= OnIncorrectAnswer;
+        _answerReader.SubmitButtonClicked -= OnSubmitButtonClick;
     }
 
-    private void OnIncorrectAnswer()
+    private void OnSubmitButtonClick(int playerAnswer)
     {
-        _container.transform.GetChild(0).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        _answer = playerAnswer;
     }
 }

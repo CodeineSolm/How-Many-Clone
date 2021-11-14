@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 0ad981f3d687ed94aa18cf854111ee89
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _Noise2_Tex: {fileID: 2800000, guid: 3584f2bf4afb5284d91edb6a29126e62, type: 3}
+  - _Main_Tex: {fileID: 2800000, guid: 76d2c2299677d96479a07a25add044ee, type: 3}
+  - _Noise_Tex: {fileID: 2800000, guid: 3584f2bf4afb5284d91edb6a29126e62, type: 3}
+  userData: 
+  assetBundleName: base/shader/u3d_stylewater.unity3d
+  assetBundleVariant: 
