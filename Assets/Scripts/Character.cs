@@ -20,7 +20,6 @@ public class Character : MonoBehaviour
 
     public void Drop()
     {
-        Debug.Log(transform.name.ToString() + " farest answer!");
         Destroy(_container.transform.GetChild(1).GetComponent<CharacterJoint>());
     }
 

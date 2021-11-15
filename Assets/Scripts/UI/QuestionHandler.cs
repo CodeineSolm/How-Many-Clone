@@ -121,11 +121,11 @@ public class QuestionHandler : MonoBehaviour
             if (character.Value == _correctAnswer)
             {
                 Debug.Log(character.Key.transform.name.ToString() + " answer is correct!");
-                //_charactersAnswers.Remove(character.Key);
             }
         }
 
-        Character _farestAnswer = _charactersAnswers.Last().Key;
-        _farestAnswer.Drop();
+        Character _farthestAnswer = _charactersAnswers.Last().Key;
+        Debug.Log(_farthestAnswer.transform.name.ToString() + " farthest answer!");
+        _farthestAnswer.Drop();
     }
 }
