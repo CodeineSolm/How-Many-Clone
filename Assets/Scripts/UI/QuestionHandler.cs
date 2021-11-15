@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 using System.Linq;
+using System.Collections;
 
 public class QuestionHandler : MonoBehaviour
 {
@@ -99,18 +100,32 @@ public class QuestionHandler : MonoBehaviour
     {
         _questionTextField.text = _correctAnswer.ToString();
 
-        foreach (var character in _characters)
-        {
-            _charactersAnswers.Add(character, character.GetAnswer(_correctAnswer));
-        }
+        StartCoroutine(CompareAnswers());
         
         CompareAnswers();
     }
 
-    private void CompareAnswers()
+    private IEnumerator CompareAnswers()
     {
-        var result = _charactersAnswers.OrderByDescending(i => System.Math.Abs(i.Value - _correctAnswer)).Select(i => i.Key);
-        Character _farestAnswer = result.Last();
+        yield return new WaitForSeconds(0.5f);
+
+        foreach (var character in _characters)
+        {
+            _charactersAnswers.Add(character, character.GetAnswer(_correctAnswer));
+        }
+
+        _charactersAnswers = _charactersAnswers.OrderBy(x => System.Math.Abs(x.Value - _correctAnswer)).ToDictionary(x => x.Key, x => x.Value);
+
+        foreach (var character in _charactersAnswers)
+        {
+            if (character.Value == _correctAnswer)
+            {
+                Debug.Log(character.Key.transform.name.ToString() + " answer is correct!");
+                //_charactersAnswers.Remove(character.Key);
+            }
+        }
+
+        Character _farestAnswer = _charactersAnswers.Last().Key;
         _farestAnswer.Drop();
     }
 }
