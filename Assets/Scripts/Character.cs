@@ -13,7 +13,7 @@ public class Character : MonoBehaviour
     protected float _partDistance = 0.25f;
     protected float _playerDistance = 0.5f;
 
-    public virtual int GetAnswer(int correctAnswer)
+    public int GetAnswer()
     {
         return _answer;
     }
@@ -21,6 +21,13 @@ public class Character : MonoBehaviour
     public void Drop()
     {
         Destroy(_container.transform.GetChild(1).GetComponent<CharacterJoint>());
+        _container.transform.GetChild(1).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX;
+    }
+
+    public void ShowAnswer()
+    {
+        //Тут, например, будет, вместо вывода в консоль, вывод "таблички" с ответом
+        Debug.Log(transform.name.ToString() + " answer is: " + _answer);
     }
 
     protected void Start()

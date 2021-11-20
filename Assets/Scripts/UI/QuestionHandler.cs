@@ -1,131 +1,179 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.Events;
 using System.Linq;
 using System.Collections;
+using UnityEngine.Events;
 
 public class QuestionHandler : MonoBehaviour
 {
-    [SerializeField] private float _timePerCharacter;
     [SerializeField] private TextMeshProUGUI _questionTextField;
     [SerializeField] private AnswerReader _answerReader;
+    [SerializeField] private QuestionWriter _questionWriter;
     [SerializeField] private List<Character> _characters = new List<Character>();
 
-    public event UnityAction Written;
+    public event UnityAction Answered;
 
-    private List<Question> _questions = new List<Question>();
-    private Dictionary<Character, int> _charactersAnswers = new Dictionary<Character, int>();
-    private string _questionText;
-    private float _timer;
-    private int _characterIndex;
     private int _correctAnswer;
-    private bool _isAllTextWriten;
 
     private void Start()
     {
-        _characterIndex = 0;
-        TakeQuestions();
-        _isAllTextWriten = false;
+        _correctAnswer = _questionWriter.GetCorrectAnswer();
     }
 
     private void Update()
     {
-        WriteNext();
-    }
 
-    private void TakeQuestions()
-    {
-        //Тут поидее должно браться несколько рандомных вопросов с файла или базы данных?
-        _questions.Add(new Question("How many signs are there in Zodiac?", 12));
-        _questions.Add(new Question("How many players are on a basketball team?", 5));
-        _questions.Add(new Question("How many stars are on the European Union flag?", 12));
-        _questions.Add(new Question("How many 'varieties' are there in Heinz Tomato Ketchup?", 57));
-        _questions.Add(new Question("How many deadly sins are there?", 7));
-        _questions.Add(new Question("How many eyes do caterpillars have?", 12));
-        _questions.Add(new Question("How many varieties of avocados are there?", 500));
-        _questions.Add(new Question("How many children did pharaoh Ramses II father?", 160));
-        _questions.Add(new Question("How many degrees does the Earth rotate each hour?", 15));
-        _questions.Add(new Question("How many players make up a field hockey team?", 11));
-    }
-
-    private void GetNext()
-    {
-        if (_questions.Count != 0)
-        {
-            int nextNumber = Random.Range(0, _questions.Count);
-            _questionText = _questions[nextNumber].GetText();
-            _correctAnswer = _questions[nextNumber].GetAnswer();
-            _questions.RemoveAt(nextNumber);
-        }
-    }
-
-    private void WriteNext()
-    {
-        GetNext();
-
-        if (_isAllTextWriten == false)
-        {
-            _timer -= Time.deltaTime;
-
-            while (_timer <= 0)
-            {
-                _timer += _timePerCharacter;
-                _characterIndex++;
-                string text = _questionText.Substring(0, _characterIndex);
-                text += "<color=#00000000>" + _questionText.Substring(_characterIndex) + "</color>";
-                _questionTextField.text = text;
-
-                if (_characterIndex >= _questionText.Length)
-                {
-                    Written?.Invoke();
-                    _isAllTextWriten = true;
-                    return;
-                }
-            }
-        }
     }
 
     private void OnEnable()
     {
         _answerReader.SubmitButtonClicked += OnSubmitButtonClicked;
+        _questionWriter.Written += OnQuestionWritten;
     }
 
     private void OnDisable()
     {
         _answerReader.SubmitButtonClicked -= OnSubmitButtonClicked;
+        _questionWriter.Written -= OnQuestionWritten;
+    }
+
+    private void OnQuestionWritten()
+    {
+        _correctAnswer = _questionWriter.GetCorrectAnswer();
     }
 
     private void OnSubmitButtonClicked(int playerAnswer)
     {
         _questionTextField.text = _correctAnswer.ToString();
-
         StartCoroutine(CompareAnswers());
-        
-        CompareAnswers();
     }
 
     private IEnumerator CompareAnswers()
     {
         yield return new WaitForSeconds(0.5f);
+        List<Character> charactersWithCorrectAnswers = new List<Character>();
+        List<Character> charactersWithClosestAnswers = new List<Character>();
+        List<Character> charactersWithSecondAnswers = new List<Character>();
+        List<Character> charactersWithThirdAnswers = new List<Character>();
+        List<Character> charactersWithFourthAnswers = new List<Character>();
+        List<Character> charactersTempOne = new List<Character>();
+        List<Character> charactersTempTwo = new List<Character>();
+        _characters = _characters.OrderBy(x => System.Math.Abs(x.GetAnswer() - _correctAnswer)).ToList();
 
         foreach (var character in _characters)
         {
-            _charactersAnswers.Add(character, character.GetAnswer(_correctAnswer));
+            character.ShowAnswer();
+
+            if (character.GetAnswer() == _correctAnswer)
+                charactersWithCorrectAnswers.Add(character);
+            else
+                charactersTempOne.Add(character);
         }
 
-        _charactersAnswers = _charactersAnswers.OrderBy(x => System.Math.Abs(x.Value - _correctAnswer)).ToDictionary(x => x.Key, x => x.Value);
+        int nextAnswer = charactersTempOne[0].GetAnswer();
 
-        foreach (var character in _charactersAnswers)
+        foreach (var character in charactersTempOne)
         {
-            if (character.Value == _correctAnswer)
+            if (character.GetAnswer() == nextAnswer)
             {
-                Debug.Log(character.Key.transform.name.ToString() + " answer is correct!");
+                if (charactersWithCorrectAnswers.Count == 0)
+                    charactersWithClosestAnswers.Add(character);
+                else
+                    charactersWithSecondAnswers.Add(character);
+            }
+            else
+                charactersTempTwo.Add(character);
+        }
+
+        charactersTempOne = new List<Character>();
+
+        if (charactersTempTwo.Count != 0)
+        {
+            nextAnswer = charactersTempTwo[0].GetAnswer();
+
+            foreach (var character in charactersTempTwo)
+            {
+                if (character.GetAnswer() == nextAnswer)
+                {
+                    if (charactersWithCorrectAnswers.Count == 0)
+                        charactersWithSecondAnswers.Add(character);
+                    else
+                        charactersWithThirdAnswers.Add(character);
+                }
+                else
+                    charactersTempOne.Add(character);
+            }
+        }
+        
+        charactersTempTwo = new List<Character>();
+
+        if (charactersTempOne.Count != 0)
+        {
+            nextAnswer = charactersTempOne[0].GetAnswer();
+
+            foreach (var character in charactersTempOne)
+            {
+                if (character.GetAnswer() == nextAnswer)
+                {
+                    if (charactersWithCorrectAnswers.Count == 0)
+                        charactersWithThirdAnswers.Add(character);
+                    else
+                        charactersWithFourthAnswers.Add(character);
+                }
+                else
+                    charactersTempTwo.Add(character);
+            }
+        }
+        
+        if (charactersTempTwo.Count != 0)
+        {
+            nextAnswer = charactersTempTwo[0].GetAnswer();
+
+            foreach (var character in charactersTempOne)
+            {
+                if (character.GetAnswer() == nextAnswer)
+                    charactersWithFourthAnswers.Add(character);
             }
         }
 
-        Character _farthestAnswer = _charactersAnswers.Last().Key;
-        Debug.Log(_farthestAnswer.transform.name.ToString() + " farthest answer!");
-        _farthestAnswer.Drop();
+        bool isSecondIsLastAnswer = false;
+        bool isThirdIsLastAnswer = false;
+        bool isFourthIsLastAnswer = false;
+
+        if (charactersWithFourthAnswers.Count != 0)
+        {
+            isFourthIsLastAnswer = true;
+        }
+        else if (charactersWithThirdAnswers.Count != 0)
+        {
+            isThirdIsLastAnswer = true;
+        }
+        else if (charactersWithSecondAnswers.Count != 0)
+        {
+            isSecondIsLastAnswer = true;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        ShowAnswerResults(charactersWithCorrectAnswers, " correct!");
+        ShowAnswerResults(charactersWithClosestAnswers, " closest!");
+        ShowAnswerResults(charactersWithSecondAnswers, " second!", isSecondIsLastAnswer);
+        ShowAnswerResults(charactersWithThirdAnswers, " third!", isThirdIsLastAnswer);
+        ShowAnswerResults(charactersWithFourthAnswers, " fourth!", isFourthIsLastAnswer);
+        yield return new WaitForSeconds(0.5f);
+        Answered?.Invoke();
+    }
+
+    private void ShowAnswerResults(List<Character> characters, string resultString, bool isFourth = false)
+    {
+        if (characters.Count > 0)
+        {
+            foreach (var character in characters)
+            {
+                Debug.Log(character.transform.name.ToString() + " " + resultString);
+                if (isFourth)
+                    character.Drop();
+            }
+        }
     }
 }
