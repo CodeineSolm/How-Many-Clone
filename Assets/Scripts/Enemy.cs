@@ -2,24 +2,24 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    [SerializeField] private AnswerReader _answerReader;
+    [SerializeField] private QuestionHandler _questionHandler;
 
-    private float _randomAnswerRange = 0.8f; //+-80%
+    private float _randomAnswerRange = 1.5f; //враги отвечают +-150% от правильного ответа
 
     private void OnEnable()
     {
-        _answerReader.SubmitButtonClicked += OnSubmitButtonClicked;
+        _questionHandler.PlayerAnswered += OnPlayerAnswered;
     }
 
     private void OnDisable()
     {
-        _answerReader.SubmitButtonClicked -= OnSubmitButtonClicked;
+        _questionHandler.PlayerAnswered -= OnPlayerAnswered;
     }
 
-    private void OnSubmitButtonClicked(int playerAnswer)
+    private void OnPlayerAnswered(int correctAnswer)
     {
-        int minRandomAnswer = (int)(playerAnswer * _randomAnswerRange);
-        int maxRandomAnswer = (int)(playerAnswer / _randomAnswerRange);
+        int minRandomAnswer = (int)(correctAnswer * _randomAnswerRange);
+        int maxRandomAnswer = (int)(correctAnswer / _randomAnswerRange);
         _answer = Random.Range(minRandomAnswer, maxRandomAnswer);
     }
 }

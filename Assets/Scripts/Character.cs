@@ -6,6 +6,8 @@ public class Character : MonoBehaviour
     [SerializeField] protected GameObject _characterPrefab;
     [SerializeField] protected GameObject _container;
     [SerializeField] protected Transform _spawnPoint;
+    [SerializeField] protected GameObject _answerPosition;
+    [SerializeField] protected AnswerView _answerView;
 
 
     protected int _answer;
@@ -22,17 +24,20 @@ public class Character : MonoBehaviour
     {
         Destroy(_container.transform.GetChild(1).GetComponent<CharacterJoint>());
         _container.transform.GetChild(1).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX;
+        _answerPosition.gameObject.SetActive(false);
     }
 
     public void ShowAnswer()
     {
-        //Тут, например, будет, вместо вывода в консоль, вывод "таблички" с ответом
-        Debug.Log(transform.name.ToString() + " answer is: " + _answer);
+        var answerView = Instantiate(_answerView, new Vector3(_answerPosition.transform.position.x, _answerPosition.transform.position.y, _answerPosition.transform.position.z), 
+            Quaternion.identity, _answerPosition.transform);
+        answerView.Show(_answer);
     }
 
     protected void Start()
     {
         Spawn();
+        _answerPosition.gameObject.SetActive(true);
     }
 
     protected void Spawn()

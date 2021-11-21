@@ -99,6 +99,7 @@ public class QuestionWriter : MonoBehaviour
     private void OnAnswered()
     {
         GetNext();
-        _isAllTextWriten = true;
+        _characterIndex = 0;
+        _isAllTextWriten = false;
     }
 }

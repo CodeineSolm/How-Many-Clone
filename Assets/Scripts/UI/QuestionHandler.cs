@@ -10,20 +10,19 @@ public class QuestionHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _questionTextField;
     [SerializeField] private AnswerReader _answerReader;
     [SerializeField] private QuestionWriter _questionWriter;
+    [SerializeField] private Answers _answers;
     [SerializeField] private List<Character> _characters = new List<Character>();
 
     public event UnityAction Answered;
+    public event UnityAction PlayerDropped;
+    public event UnityAction<int> PlayerAnswered;
+    public event UnityAction PlayerSurvived;
 
     private int _correctAnswer;
 
     private void Start()
     {
         _correctAnswer = _questionWriter.GetCorrectAnswer();
-    }
-
-    private void Update()
-    {
-
     }
 
     private void OnEnable()
@@ -46,6 +45,7 @@ public class QuestionHandler : MonoBehaviour
     private void OnSubmitButtonClicked(int playerAnswer)
     {
         _questionTextField.text = _correctAnswer.ToString();
+        PlayerAnswered?.Invoke(_correctAnswer);
         StartCoroutine(CompareAnswers());
     }
 
@@ -71,6 +71,7 @@ public class QuestionHandler : MonoBehaviour
                 charactersTempOne.Add(character);
         }
 
+        _answers.gameObject.SetActive(true);
         int nextAnswer = charactersTempOne[0].GetAnswer();
 
         foreach (var character in charactersTempOne)
@@ -154,14 +155,20 @@ public class QuestionHandler : MonoBehaviour
             isSecondIsLastAnswer = true;
         }
 
+        yield return new WaitForSeconds(1f);
+        _answers.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         ShowAnswerResults(charactersWithCorrectAnswers, " correct!");
         ShowAnswerResults(charactersWithClosestAnswers, " closest!");
         ShowAnswerResults(charactersWithSecondAnswers, " second!", isSecondIsLastAnswer);
         ShowAnswerResults(charactersWithThirdAnswers, " third!", isThirdIsLastAnswer);
         ShowAnswerResults(charactersWithFourthAnswers, " fourth!", isFourthIsLastAnswer);
-        yield return new WaitForSeconds(0.5f);
-        Answered?.Invoke();
+        yield return new WaitForSeconds(1f);
+
+        if (_characters.Count == 1)
+            PlayerSurvived?.Invoke();
+        else
+            Answered?.Invoke();
     }
 
     private void ShowAnswerResults(List<Character> characters, string resultString, bool isFourth = false)
@@ -172,7 +179,16 @@ public class QuestionHandler : MonoBehaviour
             {
                 Debug.Log(character.transform.name.ToString() + " " + resultString);
                 if (isFourth)
+                {
                     character.Drop();
+                    _characters.Remove(character);
+                    //также нужно тут убирать отображение ответа от того, кто упал
+
+                    if (character.gameObject.TryGetComponent<Player>(out Player player))
+                    {
+                        PlayerDropped?.Invoke();
+                    }
+                }
             }
         }
     }

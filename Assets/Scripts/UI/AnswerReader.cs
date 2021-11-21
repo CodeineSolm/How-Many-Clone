@@ -20,6 +20,7 @@ public class AnswerReader : MonoBehaviour
         int playerAnswer = Convert.ToInt32(_answerInputField.text);
         SubmitButtonClicked?.Invoke(playerAnswer);
         Hide();
+        _answerInputField.text = "";
     }
 
     private void Awake()
