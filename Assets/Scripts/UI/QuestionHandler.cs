@@ -10,7 +10,8 @@ public class QuestionHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _questionTextField;
     [SerializeField] private AnswerReader _answerReader;
     [SerializeField] private QuestionWriter _questionWriter;
-    [SerializeField] private Answers _answers;
+    [SerializeField] private Answer _answers;
+    [SerializeField] private AnswerPlacementView _answersPlacementsView;
     [SerializeField] private List<Character> _characters = new List<Character>();
 
     public event UnityAction Answered;
@@ -19,6 +20,11 @@ public class QuestionHandler : MonoBehaviour
     public event UnityAction PlayerSurvived;
 
     private int _correctAnswer;
+    private const string _correctAnswerText = "Correct";
+    private const string _closestAnswerText = "Closest";
+    private const string _secondAnswerText = "Second";
+    private const string _thirdAnswerText = "Third";
+    private const string _fourthAnswerText = "Fourth";
 
     private void Start()
     {
@@ -143,27 +149,22 @@ public class QuestionHandler : MonoBehaviour
         bool isFourthIsLastAnswer = false;
 
         if (charactersWithFourthAnswers.Count != 0)
-        {
             isFourthIsLastAnswer = true;
-        }
         else if (charactersWithThirdAnswers.Count != 0)
-        {
             isThirdIsLastAnswer = true;
-        }
         else if (charactersWithSecondAnswers.Count != 0)
-        {
             isSecondIsLastAnswer = true;
-        }
 
         yield return new WaitForSeconds(1f);
         _answers.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
-        ShowAnswerResults(charactersWithCorrectAnswers, " correct!");
-        ShowAnswerResults(charactersWithClosestAnswers, " closest!");
-        ShowAnswerResults(charactersWithSecondAnswers, " second!", isSecondIsLastAnswer);
-        ShowAnswerResults(charactersWithThirdAnswers, " third!", isThirdIsLastAnswer);
-        ShowAnswerResults(charactersWithFourthAnswers, " fourth!", isFourthIsLastAnswer);
+        ShowAnswerResults(charactersWithCorrectAnswers, _correctAnswerText);
+        ShowAnswerResults(charactersWithClosestAnswers, _closestAnswerText);
+        ShowAnswerResults(charactersWithSecondAnswers, _secondAnswerText, isSecondIsLastAnswer);
+        ShowAnswerResults(charactersWithThirdAnswers, _thirdAnswerText, isThirdIsLastAnswer);
+        ShowAnswerResults(charactersWithFourthAnswers, _fourthAnswerText, isFourthIsLastAnswer);
         yield return new WaitForSeconds(1f);
+        _answersPlacementsView.Hide();
 
         if (_characters.Count == 1)
             PlayerSurvived?.Invoke();
@@ -171,18 +172,19 @@ public class QuestionHandler : MonoBehaviour
             Answered?.Invoke();
     }
 
-    private void ShowAnswerResults(List<Character> characters, string resultString, bool isFourth = false)
+    private void ShowAnswerResults(List<Character> characters, string placementText, bool isLastAnswer = false)
     {
         if (characters.Count > 0)
         {
             foreach (var character in characters)
             {
-                Debug.Log(character.transform.name.ToString() + " " + resultString);
-                if (isFourth)
+                Transform characterPosition = character.gameObject.transform.GetChild(character.gameObject.transform.childCount - 1).transform;
+                _answersPlacementsView.Show(placementText, characterPosition);
+
+                if (isLastAnswer)
                 {
                     character.Drop();
                     _characters.Remove(character);
-                    //также нужно тут убирать отображение ответа от того, кто упал
 
                     if (character.gameObject.TryGetComponent<Player>(out Player player))
                     {
