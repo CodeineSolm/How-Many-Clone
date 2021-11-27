@@ -221,7 +221,7 @@ Transform:
   - {fileID: 448078530}
   - {fileID: 556953852}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &90746693
 GameObject:
@@ -253,6 +253,53 @@ Transform:
   m_Father: {fileID: 492201140}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &190930424
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 190930426}
+  - component: {fileID: 190930425}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &190930425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190930424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e30dd421350d540b5721f5c61586c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _questionHandler: {fileID: 1824815308}
+  _survivedScreen: {fileID: 7193606563653335946, guid: a3dd5376e2b3bd5469e5c12b73ff1eca, type: 3}
+  _failedScreen: {fileID: 5671373430513012901, guid: 588ec333ad67fbf49acfae6a5ed585c7, type: 3}
+  _canvas: {fileID: 1824815303}
+--- !u!4 &190930426
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190930424}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.053916052, y: 1.1102889, z: 4.459971}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &202848098
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,7 +310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 202848099}
   m_Layer: 5
-  m_Name: Third Enemy Answer Position
+  m_Name: Third Enemy Answer Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -482,7 +529,7 @@ MonoBehaviour:
   _characterPrefab: {fileID: 1750036454947828, guid: 2869f50f08793594889040a0ec4b691e, type: 3}
   _container: {fileID: 448078528}
   _spawnPoint: {fileID: 438560793}
-  _answerPosition: {fileID: 1152203895}
+  _answerContainer: {fileID: 1152203895}
   _answerView: {fileID: 2919536647746273068, guid: 9c1a19dd7ed4e374b86e9e5d4c5d8eba, type: 3}
   _questionHandler: {fileID: 1824815308}
 --- !u!4 &448078530
@@ -580,7 +627,7 @@ Transform:
   - {fileID: 438560793}
   - {fileID: 1024232140}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &510461993
 GameObject:
@@ -592,7 +639,7 @@ GameObject:
   m_Component:
   - component: {fileID: 510461994}
   m_Layer: 5
-  m_Name: Player Answer Position
+  m_Name: Player Answer Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -783,7 +830,7 @@ MonoBehaviour:
   _characterPrefab: {fileID: 1750036454947828, guid: 2869f50f08793594889040a0ec4b691e, type: 3}
   _container: {fileID: 556953850}
   _spawnPoint: {fileID: 1024232140}
-  _answerPosition: {fileID: 202848098}
+  _answerContainer: {fileID: 202848098}
   _answerView: {fileID: 2919536647746273068, guid: 9c1a19dd7ed4e374b86e9e5d4c5d8eba, type: 3}
   _questionHandler: {fileID: 1824815308}
 --- !u!4 &556953852
@@ -1015,7 +1062,7 @@ GameObject:
   m_Component:
   - component: {fileID: 678440784}
   m_Layer: 5
-  m_Name: First Enemy Answer Position
+  m_Name: First Enemy Answer Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1131,7 +1178,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 104.039, y: 200.8, z: 0}
 --- !u!1 &775661228
 GameObject:
@@ -1300,7 +1347,6 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
-  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1371,7 +1417,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -1405,19 +1451,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!114 &963194230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5e30dd421350d540b5721f5c61586c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _questionHandler: {fileID: 1824815308}
 --- !u!1 &1024232139
 GameObject:
   m_ObjectHideFlags: 0
@@ -1644,7 +1677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1152203896}
   m_Layer: 5
-  m_Name: Second Enemy Answer Position
+  m_Name: Second Enemy Answer Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1763,7 +1796,7 @@ Transform:
   m_LocalScale: {x: 4, y: 2.53, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: -90.553, y: 0, z: 0}
 --- !u!1 &1382084695
 GameObject:
@@ -1860,7 +1893,7 @@ Transform:
   m_LocalScale: {x: 3, y: 1, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: -6.863, y: 0, z: 0}
 --- !u!114 &1382084700
 MonoBehaviour:
@@ -2229,7 +2262,7 @@ Transform:
   m_LocalScale: {x: 7, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1824815303
 GameObject:
@@ -2329,7 +2362,7 @@ RectTransform:
   - {fileID: 1059284098}
   - {fileID: 460200784}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2391,7 +2424,7 @@ MonoBehaviour:
   _characterPrefab: {fileID: 1750036454947828, guid: 2869f50f08793594889040a0ec4b691e, type: 3}
   _container: {fileID: 1871516878}
   _spawnPoint: {fileID: 90746694}
-  _answerPosition: {fileID: 678440783}
+  _answerContainer: {fileID: 678440783}
   _answerView: {fileID: 2919536647746273068, guid: 9c1a19dd7ed4e374b86e9e5d4c5d8eba, type: 3}
   _questionHandler: {fileID: 1824815308}
 --- !u!4 &1871516880
@@ -2627,7 +2660,7 @@ MonoBehaviour:
   _characterPrefab: {fileID: 1997953001238138, guid: 16e7451e81164bc4caac73768f16ceb6, type: 3}
   _container: {fileID: 2119702656}
   _spawnPoint: {fileID: 617039148}
-  _answerPosition: {fileID: 510461993}
+  _answerContainer: {fileID: 510461993}
   _answerView: {fileID: 2919536647746273068, guid: 9c1a19dd7ed4e374b86e9e5d4c5d8eba, type: 3}
   _answerReader: {fileID: 241375469}
 --- !u!4 &2119702658

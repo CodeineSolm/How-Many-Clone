@@ -6,7 +6,7 @@ public class Character : MonoBehaviour
     [SerializeField] protected GameObject _characterPrefab;
     [SerializeField] protected GameObject _container;
     [SerializeField] protected Transform _spawnPoint;
-    [SerializeField] protected GameObject _answerPosition;
+    [SerializeField] protected GameObject _answerContainer;
     [SerializeField] protected AnswerView _answerView;
 
 
@@ -14,6 +14,8 @@ public class Character : MonoBehaviour
     protected int _lenght = 1;
     protected float _partDistance = 0.25f;
     protected float _playerDistance = 0.5f;
+    private float _placementTextShiftX = 0.5f;
+    private float _placementTextShiftY = 1.2f;
 
     public int GetAnswer()
     {
@@ -24,20 +26,21 @@ public class Character : MonoBehaviour
     {
         Destroy(_container.transform.GetChild(1).GetComponent<CharacterJoint>());
         _container.transform.GetChild(1).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX;
-        _answerPosition.gameObject.SetActive(false);
+        _answerContainer.gameObject.SetActive(false);
     }
 
     public void ShowAnswer()
     {
-        var answerView = Instantiate(_answerView, new Vector3(_answerPosition.transform.position.x, _answerPosition.transform.position.y, _answerPosition.transform.position.z), 
-            Quaternion.identity, _answerPosition.transform);
+        Transform characterPosition = _container.gameObject.transform.GetChild(_container.gameObject.transform.childCount - 1).transform;
+        var answerView = Instantiate(_answerView, new Vector3(characterPosition.position.x + _placementTextShiftX, characterPosition.position.y + _placementTextShiftY, 
+            characterPosition.position.z), Quaternion.identity, _answerContainer.transform);
         answerView.Show(_answer);
     }
 
     protected void Start()
     {
         Spawn();
-        _answerPosition.gameObject.SetActive(true);
+        _answerContainer.gameObject.SetActive(true);
     }
 
     protected void Spawn()

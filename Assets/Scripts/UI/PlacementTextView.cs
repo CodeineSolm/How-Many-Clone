@@ -11,8 +11,9 @@ public class PlacementTextView : MonoBehaviour
         _placementText = GetComponent<TextMeshProUGUI>();
     }
 
-    public void Show(string placementText)
+    public void Show(string placementText, Color textColor)
     {
+        _placementText.color = textColor;
         _placementText.text = placementText;
     }
 

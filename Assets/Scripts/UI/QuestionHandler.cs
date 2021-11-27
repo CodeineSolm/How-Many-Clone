@@ -20,6 +20,11 @@ public class QuestionHandler : MonoBehaviour
     public event UnityAction PlayerSurvived;
 
     private int _correctAnswer;
+    private Color _correctAnswerColor = Color.green;
+    private Color _closestAnswerColor = Color.green;
+    private Color32 _secondAnswerColor = Color.yellow;
+    private Color32 _thirdAnswerColor = new Color32(255, 138, 0, 255);
+    private Color _fourthAnswerColor = Color.red;
     private const string _correctAnswerText = "Correct";
     private const string _closestAnswerText = "Closest";
     private const string _secondAnswerText = "Second";
@@ -158,11 +163,11 @@ public class QuestionHandler : MonoBehaviour
         yield return new WaitForSeconds(1f);
         _answers.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
-        ShowAnswerResults(charactersWithCorrectAnswers, _correctAnswerText);
-        ShowAnswerResults(charactersWithClosestAnswers, _closestAnswerText);
-        ShowAnswerResults(charactersWithSecondAnswers, _secondAnswerText, isSecondIsLastAnswer);
-        ShowAnswerResults(charactersWithThirdAnswers, _thirdAnswerText, isThirdIsLastAnswer);
-        ShowAnswerResults(charactersWithFourthAnswers, _fourthAnswerText, isFourthIsLastAnswer);
+        ShowAnswerResults(charactersWithCorrectAnswers, _correctAnswerText, _correctAnswerColor);
+        ShowAnswerResults(charactersWithClosestAnswers, _closestAnswerText, _closestAnswerColor);
+        ShowAnswerResults(charactersWithSecondAnswers, _secondAnswerText, _secondAnswerColor, isSecondIsLastAnswer);
+        ShowAnswerResults(charactersWithThirdAnswers, _thirdAnswerText, _thirdAnswerColor, isThirdIsLastAnswer);
+        ShowAnswerResults(charactersWithFourthAnswers, _fourthAnswerText, _fourthAnswerColor, isFourthIsLastAnswer);
         yield return new WaitForSeconds(1f);
         _answersPlacementsView.Hide();
 
@@ -172,14 +177,14 @@ public class QuestionHandler : MonoBehaviour
             Answered?.Invoke();
     }
 
-    private void ShowAnswerResults(List<Character> characters, string placementText, bool isLastAnswer = false)
+    private void ShowAnswerResults(List<Character> characters, string placementText, Color textColor, bool isLastAnswer = false)
     {
         if (characters.Count > 0)
         {
             foreach (var character in characters)
             {
                 Transform characterPosition = character.gameObject.transform.GetChild(character.gameObject.transform.childCount - 1).transform;
-                _answersPlacementsView.Show(placementText, characterPosition);
+                _answersPlacementsView.Show(placementText, characterPosition, textColor);
 
                 if (isLastAnswer)
                 {
