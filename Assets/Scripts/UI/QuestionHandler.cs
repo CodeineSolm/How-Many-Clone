@@ -20,6 +20,7 @@ public class QuestionHandler : MonoBehaviour
     public event UnityAction PlayerSurvived;
 
     private int _correctAnswer;
+    private bool _isPlayerDropped = false;
     private Color _correctAnswerColor = Color.green;
     private Color _closestAnswerColor = Color.green;
     private Color32 _secondAnswerColor = Color.yellow;
@@ -173,7 +174,7 @@ public class QuestionHandler : MonoBehaviour
 
         if (_characters.Count == 1)
             PlayerSurvived?.Invoke();
-        else
+        else if (_isPlayerDropped == false)
             Answered?.Invoke();
     }
 
@@ -194,6 +195,7 @@ public class QuestionHandler : MonoBehaviour
                     if (character.gameObject.TryGetComponent<Player>(out Player player))
                     {
                         PlayerDropped?.Invoke();
+                        _isPlayerDropped = true;
                     }
                 }
             }

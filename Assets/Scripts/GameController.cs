@@ -6,6 +6,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private SurvivedScreen _survivedScreen;
     [SerializeField] private FailedScreen _failedScreen;
     [SerializeField] private GameObject _canvas;
+    [SerializeField] private float _freezeTimeDelay = 1.1f;
+    [SerializeField] private float _showScreenDelay = 3f;
 
     private void OnEnable()
     {
@@ -21,34 +23,28 @@ public class GameController : MonoBehaviour
 
     private void OnPlayerDropped()
     {
-        Invoke("ShowFailedScreen", 3f);
+        Invoke("ShowFailedScreen", _showScreenDelay);
     }
 
     private void OnPlayerSurvived()
     {
-        Invoke("ShowSurvivedScreen", 3f);
+        Invoke("ShowSurvivedScreen", _showScreenDelay);
     }
 
     private void ShowSurvivedScreen()
     {
-        InstantiateScreen(_survivedScreen);
-        Invoke("FreezeTime", 0.5f);
+        _survivedScreen.Show();
+        Invoke("FreezeTime", _freezeTimeDelay);
     }
 
     private void ShowFailedScreen()
     {
-        InstantiateScreen(_failedScreen);
-        Invoke("FreezeTime", 0.5f);
+        _failedScreen.Show();
+        Invoke("FreezeTime", _freezeTimeDelay);
     }
 
     private void FreezeTime()
     {
         Time.timeScale = 0;
-    }
-
-    private void InstantiateScreen(EndGameScreen endGameScreen)
-    {
-        Instantiate(endGameScreen, new Vector3(_canvas.transform.position.x, _canvas.transform.position.y, _canvas.transform.position.z),
-            Quaternion.identity, _canvas.transform);
     }
 }
