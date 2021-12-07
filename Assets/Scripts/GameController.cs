@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -6,8 +7,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private SurvivedScreen _survivedScreen;
     [SerializeField] private FailedScreen _failedScreen;
     [SerializeField] private GameObject _canvas;
-    [SerializeField] private float _freezeTimeDelay = 1.1f;
-    [SerializeField] private float _showScreenDelay = 3f;
+    [SerializeField] private GameObject _confettiPrefab;
+    [SerializeField] private float _freezeTimeDelay;
+    [SerializeField] private float _showSurvivedScreenDelay;
+    [SerializeField] private float _showFailedScreenDelay;
 
     private void OnEnable()
     {
@@ -23,18 +26,18 @@ public class GameController : MonoBehaviour
 
     private void OnPlayerDropped()
     {
-        Invoke("ShowFailedScreen", _showScreenDelay);
+        Invoke("ShowFailedScreen", _showFailedScreenDelay);
     }
 
     private void OnPlayerSurvived()
     {
-        Invoke("ShowSurvivedScreen", _showScreenDelay);
+        Invoke("ShowSurvivedScreen", _showSurvivedScreenDelay);
     }
 
     private void ShowSurvivedScreen()
     {
+        SpawnSurvivedEffect();
         _survivedScreen.Show();
-        Invoke("FreezeTime", _freezeTimeDelay);
     }
 
     private void ShowFailedScreen()
@@ -46,5 +49,12 @@ public class GameController : MonoBehaviour
     private void FreezeTime()
     {
         Time.timeScale = 0;
+    }
+
+    private void SpawnSurvivedEffect()
+    {
+        var spwanObj = Instantiate(_confettiPrefab, new Vector3(_canvas.transform.position.x, _canvas.transform.position.y, _canvas.transform.position.z - 5f), Quaternion.identity);
+        //spwanObj.transform.parent = _canvas.transform;
+        //spwanObj.transform.localPosition = spawnPosition;
     }
 }
