@@ -5,18 +5,17 @@ public class CameraZoom : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private QuestionHandler _questionHandler;
     [SerializeField] private float _zoomSpeed = 0.005f;
+    [SerializeField] private float _zoomShiftByY = 1f;
+    [SerializeField] private float _zoomShiftByZ = -7f;
     
     private bool _isActive;
     private Camera _camera;
     private Vector3 _startPosition;
-    private float _zoomShiftByX = -0.35f;
-    private float _zoomShiftByY = 1f;
-    private float _zoomShiftByZ = -5f;
 
 
     public void Zoom()
     {
-        Vector3 target = new Vector3(_player.transform.position.x + _zoomShiftByX, _player.transform.position.y + _zoomShiftByY, _player.transform.position.z + _zoomShiftByZ);
+        Vector3 target = new Vector3(_player.transform.position.x, _player.transform.position.y + _zoomShiftByY, _player.transform.position.z + _zoomShiftByZ);
         _camera.transform.position = Vector3.Lerp(_camera.transform.position, target, _zoomSpeed);
     }
 

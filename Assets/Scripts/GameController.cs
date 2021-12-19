@@ -1,8 +1,9 @@
-using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] private int _surviveReward;
     [SerializeField] private QuestionHandler _questionHandler;
     [SerializeField] private SurvivedScreen _survivedScreen;
     [SerializeField] private FailedScreen _failedScreen;
@@ -11,6 +12,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private float _freezeTimeDelay;
     [SerializeField] private float _showSurvivedScreenDelay;
     [SerializeField] private float _showFailedScreenDelay;
+
+    public event UnityAction<int> PlayerSurvived;
 
     private void OnEnable()
     {
@@ -36,8 +39,10 @@ public class GameController : MonoBehaviour
 
     private void ShowSurvivedScreen()
     {
+        PlayerSurvived.Invoke(_surviveReward);
         SpawnSurvivedEffect();
         _survivedScreen.Show();
+        _survivedScreen.ShowPlayerMoney();
     }
 
     private void ShowFailedScreen()
@@ -54,7 +59,5 @@ public class GameController : MonoBehaviour
     private void SpawnSurvivedEffect()
     {
         var spwanObj = Instantiate(_confettiPrefab, new Vector3(_canvas.transform.position.x, _canvas.transform.position.y, _canvas.transform.position.z - 5f), Quaternion.identity);
-        //spwanObj.transform.parent = _canvas.transform;
-        //spwanObj.transform.localPosition = spawnPosition;
     }
 }

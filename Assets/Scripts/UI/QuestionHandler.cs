@@ -63,6 +63,9 @@ public class QuestionHandler : MonoBehaviour
 
     private IEnumerator CompareAnswers()
     {
+        bool isSecondIsLastAnswer = false;
+        bool isThirdIsLastAnswer = false;
+        bool isFourthIsLastAnswer = false;
         yield return new WaitForSeconds(0.5f);
         List<Character> charactersWithCorrectAnswers = new List<Character>();
         List<Character> charactersWithClosestAnswers = new List<Character>();
@@ -84,82 +87,82 @@ public class QuestionHandler : MonoBehaviour
         }
 
         _answers.gameObject.SetActive(true);
-        int nextAnswer = charactersTempOne[0].GetAnswer();
 
-        foreach (var character in charactersTempOne)
+        if (_characters.Count != charactersWithCorrectAnswers.Count)
         {
-            if (character.GetAnswer() == nextAnswer)
-            {
-                if (charactersWithCorrectAnswers.Count == 0)
-                    charactersWithClosestAnswers.Add(character);
-                else
-                    charactersWithSecondAnswers.Add(character);
-            }
-            else
-                charactersTempTwo.Add(character);
-        }
-
-        charactersTempOne = new List<Character>();
-
-        if (charactersTempTwo.Count != 0)
-        {
-            nextAnswer = charactersTempTwo[0].GetAnswer();
-
-            foreach (var character in charactersTempTwo)
-            {
-                if (character.GetAnswer() == nextAnswer)
-                {
-                    if (charactersWithCorrectAnswers.Count == 0)
-                        charactersWithSecondAnswers.Add(character);
-                    else
-                        charactersWithThirdAnswers.Add(character);
-                }
-                else
-                    charactersTempOne.Add(character);
-            }
-        }
-        
-        charactersTempTwo = new List<Character>();
-
-        if (charactersTempOne.Count != 0)
-        {
-            nextAnswer = charactersTempOne[0].GetAnswer();
+            int nextAnswer = charactersTempOne[0].GetAnswer();
 
             foreach (var character in charactersTempOne)
             {
                 if (character.GetAnswer() == nextAnswer)
                 {
                     if (charactersWithCorrectAnswers.Count == 0)
-                        charactersWithThirdAnswers.Add(character);
+                        charactersWithClosestAnswers.Add(character);
                     else
-                        charactersWithFourthAnswers.Add(character);
+                        charactersWithSecondAnswers.Add(character);
                 }
                 else
                     charactersTempTwo.Add(character);
             }
-        }
-        
-        if (charactersTempTwo.Count != 0)
-        {
-            nextAnswer = charactersTempTwo[0].GetAnswer();
 
-            foreach (var character in charactersTempOne)
+            charactersTempOne = new List<Character>();
+
+            if (charactersTempTwo.Count != 0)
             {
-                if (character.GetAnswer() == nextAnswer)
-                    charactersWithFourthAnswers.Add(character);
+                nextAnswer = charactersTempTwo[0].GetAnswer();
+
+                foreach (var character in charactersTempTwo)
+                {
+                    if (character.GetAnswer() == nextAnswer)
+                    {
+                        if (charactersWithCorrectAnswers.Count == 0)
+                            charactersWithSecondAnswers.Add(character);
+                        else
+                            charactersWithThirdAnswers.Add(character);
+                    }
+                    else
+                        charactersTempOne.Add(character);
+                }
             }
+
+            charactersTempTwo = new List<Character>();
+
+            if (charactersTempOne.Count != 0)
+            {
+                nextAnswer = charactersTempOne[0].GetAnswer();
+
+                foreach (var character in charactersTempOne)
+                {
+                    if (character.GetAnswer() == nextAnswer)
+                    {
+                        if (charactersWithCorrectAnswers.Count == 0)
+                            charactersWithThirdAnswers.Add(character);
+                        else
+                            charactersWithFourthAnswers.Add(character);
+                    }
+                    else
+                        charactersTempTwo.Add(character);
+                }
+            }
+
+            if (charactersTempTwo.Count != 0)
+            {
+                nextAnswer = charactersTempTwo[0].GetAnswer();
+
+                foreach (var character in charactersTempOne)
+                {
+                    if (character.GetAnswer() == nextAnswer)
+                        charactersWithFourthAnswers.Add(character);
+                }
+            }
+
+            if (charactersWithFourthAnswers.Count != 0)
+                isFourthIsLastAnswer = true;
+            else if (charactersWithThirdAnswers.Count != 0)
+                isThirdIsLastAnswer = true;
+            else if (charactersWithSecondAnswers.Count != 0)
+                isSecondIsLastAnswer = true;
         }
-
-        bool isSecondIsLastAnswer = false;
-        bool isThirdIsLastAnswer = false;
-        bool isFourthIsLastAnswer = false;
-
-        if (charactersWithFourthAnswers.Count != 0)
-            isFourthIsLastAnswer = true;
-        else if (charactersWithThirdAnswers.Count != 0)
-            isThirdIsLastAnswer = true;
-        else if (charactersWithSecondAnswers.Count != 0)
-            isSecondIsLastAnswer = true;
 
         yield return new WaitForSeconds(1f);
         _answers.gameObject.SetActive(false);

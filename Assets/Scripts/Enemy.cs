@@ -4,7 +4,7 @@ public class Enemy : Character
 {
     [SerializeField] private QuestionHandler _questionHandler;
 
-    private float _randomAnswerRange = 1.5f; //враги отвечают +-150% от правильного ответа
+    private float _randomAnswerRange = 1.5f; //враги отвечают +-50% от правильного ответа
 
     private void OnEnable()
     {

@@ -17,6 +17,11 @@ public class EndGameScreen : MonoBehaviour
         _isFadeOut = true;
     }
 
+    private void Awake()
+    {
+        _screenCanvasGroup.alpha = 0;
+    }
+
     private void Update()
     {
         if (_isFadeIn == true)

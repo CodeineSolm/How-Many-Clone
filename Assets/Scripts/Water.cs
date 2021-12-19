@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Water : MonoBehaviour
@@ -9,6 +8,13 @@ public class Water : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Physics.IgnoreCollision(collision.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
-        Instantiate(_splashEffect, collision.GetContact(0).point, Quaternion.identity);
+        var splashEffect = Instantiate(_splashEffect, collision.GetContact(0).point, Quaternion.identity);
+        StartCoroutine(DestroySplashEffect(splashEffect));
+    }
+
+    private IEnumerator DestroySplashEffect(GameObject splashEffect)
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(splashEffect);
     }
 }
