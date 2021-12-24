@@ -11,6 +11,7 @@ public class Character : MonoBehaviour
     private float _placementTextShiftX = 0.5f;
     private float _placementTextShiftY = 1.2f;
     private CharacterJoint _characterJoint;
+    private string _name;
 
     public int GetAnswer()
     {
