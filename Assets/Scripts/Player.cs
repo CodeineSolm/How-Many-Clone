@@ -7,6 +7,8 @@ public class Player : Character
     [SerializeField] private QuestionHandler _questionHandler;
     [SerializeField] private GameController _gameManager;
 
+    public static string PlayerName;
+
     private int _money;
     private int _currentHealth;
 
@@ -26,6 +28,7 @@ public class Player : Character
         _answerReader.SubmitButtonClicked += OnSubmitButtonClick;
         _gameManager.PlayerSurvived += OnPlayerSurvived;
         _questionHandler.PlayerDropped += OnPlayerDropped;
+        _name = PlayerName;
     }
 
     private void OnDisable()

@@ -6,12 +6,14 @@ public class Character : MonoBehaviour
     [SerializeField] protected GameObject _container;
     [SerializeField] protected GameObject _answerContainer;
     [SerializeField] protected AnswerView _answerView;
+    [SerializeField] protected GameObject _nameContainer;
+    [SerializeField] protected NameView _nameView;
 
     protected int _answer;
+    protected string _name;
     private float _placementTextShiftX = 0.5f;
     private float _placementTextShiftY = 1.2f;
     private CharacterJoint _characterJoint;
-    private string _name;
 
     public int GetAnswer()
     {
@@ -30,6 +32,14 @@ public class Character : MonoBehaviour
         var answerView = Instantiate(_answerView, new Vector3(characterPosition.position.x + _placementTextShiftX, characterPosition.position.y + _placementTextShiftY, 
             characterPosition.position.z), Quaternion.identity, _answerContainer.transform);
         answerView.Show(_answer);
+    }
+
+    public void ShowName()
+    {
+        var nameView = Instantiate(_nameView, new Vector3(_nameContainer.transform.position.x, _nameContainer.transform.position.y,
+            _nameContainer.transform.position.z), Quaternion.identity, _nameContainer.transform);
+        //Debug.Log(_name);
+        nameView.Show(_name);
     }
 
     protected void Awake()

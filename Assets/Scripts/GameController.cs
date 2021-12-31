@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private float _showSurvivedScreenDelay;
     [SerializeField] private float _showFailedScreenDelay;
 
+    public static string PlayerName;
     public event UnityAction<int> PlayerSurvived;
 
     private void OnEnable()
