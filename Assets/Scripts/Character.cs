@@ -7,12 +7,15 @@ public class Character : MonoBehaviour
     [SerializeField] protected GameObject _answerContainer;
     [SerializeField] protected AnswerView _answerView;
     [SerializeField] protected GameObject _nameContainer;
-    [SerializeField] protected NameView _nameView;
+    [SerializeField] protected NameView _nameViewTemplate;
+    [SerializeField] protected CharacterFlagView _flagViewTemplate;
 
     protected int _answer;
     protected string _name;
+    protected Sprite _flag;
     private float _placementTextShiftX = 0.5f;
     private float _placementTextShiftY = 1.2f;
+    private float _flagImageShiftX = -0.33f;
     private CharacterJoint _characterJoint;
 
     public int GetAnswer()
@@ -34,12 +37,14 @@ public class Character : MonoBehaviour
         answerView.Show(_answer);
     }
 
-    public void ShowName()
+    public void ShowInfo()
     {
-        var nameView = Instantiate(_nameView, new Vector3(_nameContainer.transform.position.x, _nameContainer.transform.position.y,
+        var nameView = Instantiate(_nameViewTemplate, new Vector3(_nameContainer.transform.position.x, _nameContainer.transform.position.y,
             _nameContainer.transform.position.z), Quaternion.identity, _nameContainer.transform);
-        //Debug.Log(_name);
         nameView.Show(_name);
+        var flagView = Instantiate(_flagViewTemplate, new Vector3(_nameContainer.transform.position.x + _flagImageShiftX, _nameContainer.transform.position.y,
+            _nameContainer.transform.position.z), Quaternion.identity, _nameContainer.transform);
+        flagView.RenderFlag(_flag);
     }
 
     protected void Awake()

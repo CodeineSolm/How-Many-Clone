@@ -1,15 +1,19 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] TMP_InputField _playerName;
+    [SerializeField] private TMP_InputField _playerName;
+    [SerializeField] private Image _flagImage;
 
     public void SetPlayerName()
     {
         if (_playerName.text == "")
-            Player.PlayerName = "Player";
+            Player.Name = "Player";
         else
-            Player.PlayerName = _playerName.text;
+            Player.Name = _playerName.text;
+
+        Player.Flag = _flagImage;
     }
 }

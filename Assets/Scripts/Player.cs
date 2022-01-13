@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : Character
 {
@@ -7,7 +8,8 @@ public class Player : Character
     [SerializeField] private QuestionHandler _questionHandler;
     [SerializeField] private GameController _gameManager;
 
-    public static string PlayerName;
+    public static string Name;
+    public static Image Flag;
 
     private int _money;
     private int _currentHealth;
@@ -28,7 +30,8 @@ public class Player : Character
         _answerReader.SubmitButtonClicked += OnSubmitButtonClick;
         _gameManager.PlayerSurvived += OnPlayerSurvived;
         _questionHandler.PlayerDropped += OnPlayerDropped;
-        _name = PlayerName;
+        _name = Name;
+        _flag = Flag.sprite;
     }
 
     private void OnDisable()

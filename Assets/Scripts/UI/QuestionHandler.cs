@@ -37,7 +37,7 @@ public class QuestionHandler : MonoBehaviour
         _correctAnswer = _questionWriter.GetCorrectAnswer();
 
         foreach (var character in _characters)
-            character.ShowName();
+            character.ShowInfo();
     }
 
     private void OnEnable()

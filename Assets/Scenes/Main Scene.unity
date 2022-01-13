@@ -1085,7 +1085,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3e3675ef1ac69c94aafa6a102c41165e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 93480b7a8d961684c88ace0060fccecc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1550,7 +1550,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 50, y: 50}
-  m_Spacing: {x: 40, y: 10}
+  m_Spacing: {x: 20, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &837559649
@@ -1770,6 +1770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerName: {fileID: 664847164}
+  _flagImage: {fileID: 667113793}
 --- !u!1 &1193308897
 GameObject:
   m_ObjectHideFlags: 0
@@ -2639,29 +2640,27 @@ MonoBehaviour:
   _container: {fileID: 837559647}
   _flags:
   - _image: {fileID: 21300000, guid: 3e46da04f6a744943b7c2cb03ae7c8e8, type: 3}
-  - _image: {fileID: 21300000, guid: fdcf5ecf0165ee84a9806183eb8f6206, type: 3}
-  - _image: {fileID: 21300000, guid: 3c51f9ec112de3146ab93979e0550e1a, type: 3}
-  - _image: {fileID: 21300000, guid: efc6c0f6c3220d44a920c8e98874d542, type: 3}
+  - _image: {fileID: 21300000, guid: aabf8f006fabbac439b702a3a0834549, type: 3}
+  - _image: {fileID: 21300000, guid: e9ef8aa5ea4d93a4bb595c8b086aa93a, type: 3}
+  - _image: {fileID: 21300000, guid: ee5bf287319ddaa49af7e078df70432e, type: 3}
   - _image: {fileID: 21300000, guid: 4673acf403c71c24c9545414c3c0f9a1, type: 3}
   - _image: {fileID: 21300000, guid: 36472d1cb8a2cb34eb1612d14e088739, type: 3}
-  - _image: {fileID: 21300000, guid: 11a5b0528b00fb748b9cf4441fc7805a, type: 3}
+  - _image: {fileID: 21300000, guid: 0a90a6a398d5d814d9a84dcac942644d, type: 3}
   - _image: {fileID: 21300000, guid: eb95b0cd96e220344ba58b910775b858, type: 3}
-  - _image: {fileID: 21300000, guid: 40a1591136722d542919c2bde8b6dd2f, type: 3}
-  - _image: {fileID: 21300000, guid: dc6c135c9dc0ea6479d3e64f022cf566, type: 3}
+  - _image: {fileID: 21300000, guid: ed9134904273ab4449db84560d8aff53, type: 3}
+  - _image: {fileID: 21300000, guid: a9548c748c1ac2e47b8f195322ac04bf, type: 3}
   - _image: {fileID: 21300000, guid: c77d0963594e2eb4db3a495ed6ee1aca, type: 3}
-  - _image: {fileID: 21300000, guid: 2b137d5f225d6184495a98f7d031ea2e, type: 3}
-  - _image: {fileID: 21300000, guid: 5f13e841b6918e141883addc0c4f2c5e, type: 3}
-  - _image: {fileID: 21300000, guid: 21fc57772b44f5f489ed179226b4c6ad, type: 3}
-  - _image: {fileID: 21300000, guid: 4676d13dcbdc13148a935c42136fa464, type: 3}
-  - _image: {fileID: 21300000, guid: 0692bc93c99a302418ede524d87fe4ce, type: 3}
-  - _image: {fileID: 21300000, guid: ae2b917d5fd22b34bba50a6015890c2c, type: 3}
-  - _image: {fileID: 21300000, guid: 049f7acaef7aa3c45b6c4049a927ed68, type: 3}
-  - _image: {fileID: 21300000, guid: aa46f89e32c5b9c4c9c74ae9f6d49e6b, type: 3}
-  - _image: {fileID: 21300000, guid: 3e3675ef1ac69c94aafa6a102c41165e, type: 3}
-  - _image: {fileID: 21300000, guid: 22a3c8fd643d95443b33959fdd012ca8, type: 3}
+  - _image: {fileID: 21300000, guid: eccf6563cb602cb4688b363e3eb54dfe, type: 3}
+  - _image: {fileID: 21300000, guid: 3699190501a71aa45a8a9b6f7895e40d, type: 3}
+  - _image: {fileID: 21300000, guid: 01b5f489e4e9bd24380cf3d87119f8f7, type: 3}
+  - _image: {fileID: 21300000, guid: 20ba6b9d7337d7e4baa0e0bd6398eb54, type: 3}
+  - _image: {fileID: 21300000, guid: b0e75420a14bee64aa8e0e9d5e558f2a, type: 3}
+  - _image: {fileID: 21300000, guid: 93480b7a8d961684c88ace0060fccecc, type: 3}
   - _image: {fileID: 21300000, guid: e9f86bf448f0a4448886107a7974a802, type: 3}
+  - _image: {fileID: 21300000, guid: aa46f89e32c5b9c4c9c74ae9f6d49e6b, type: 3}
   - _image: {fileID: 21300000, guid: 0745469f651579145bc2f950375952d9, type: 3}
   - _image: {fileID: 21300000, guid: a5e1f5fd8481bcf4caf34c825f9efe7a, type: 3}
+  - _image: {fileID: 21300000, guid: f8ab234ff7a648744ab972a8868323c8, type: 3}
   _chooseFlagView: {fileID: 47972084}
   _chooseButtonFlagImage: {fileID: 667113793}
 --- !u!4 &1820903442 stripped

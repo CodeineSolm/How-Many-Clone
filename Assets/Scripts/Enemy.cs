@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : Character
 {
     [SerializeField] private QuestionHandler _questionHandler;
+    [SerializeField] private FlagList _flagList;
 
     private float _randomAnswerRange = 1.5f; //враги отвечают +-50% от правильного ответа
     private List<string> _names = new List<string>();
@@ -11,6 +13,7 @@ public class Enemy : Character
     private void OnEnable()
     {
         SetName();
+        SetFlag();
         _questionHandler.PlayerAnswered += OnPlayerAnswered;
     }
 
@@ -39,6 +42,12 @@ public class Enemy : Character
         _names.Add("Anna");
         _names.Add("Carlos");
         _names.Add("Lando");
+        _names.Add("Daniel");
         _name = _names[Random.Range(0, _names.Count)];
+    }
+    
+    private void SetFlag()
+    {
+        _flag = _flagList.GetFlag();
     }
 }
