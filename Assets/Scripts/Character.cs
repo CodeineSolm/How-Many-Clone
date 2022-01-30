@@ -16,7 +16,7 @@ public class Character : MonoBehaviour
     private float _placementTextShiftX = 0.5f;
     private float _placementTextShiftY = 1.2f;
     private float _flagImageShiftX = -0.33f;
-    private CharacterJoint _characterJoint;
+    private GameObject _playerModel;
 
     public int GetAnswer()
     {
@@ -26,7 +26,12 @@ public class Character : MonoBehaviour
     public void Drop()
     {
         _answerContainer.gameObject.SetActive(false);
-        Destroy(_characterJoint);
+        _playerModel.transform.position = new Vector3(_playerModel.transform.position.x, _playerModel.transform.position.y - 10f, _playerModel.transform.position.z);
+    }
+
+    public void Fall(float fallDistance)
+    {
+        _playerModel.transform.position = new Vector3(_playerModel.transform.position.x, _playerModel.transform.position.y - fallDistance, _playerModel.transform.position.z);
     }
 
     public void ShowAnswer()
@@ -57,6 +62,6 @@ public class Character : MonoBehaviour
     {
         var characterTemp = Instantiate(_characterPrefab, new Vector3(_container.transform.position.x, _container.transform.position.y,
             _container.transform.position.z), Quaternion.Euler(new Vector3(0, 180, 0)), _container.transform);
-        _characterJoint = characterTemp.gameObject.transform.GetChild(0).gameObject.GetComponent<CharacterJoint>();
+        _playerModel = gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject;
     }
 }

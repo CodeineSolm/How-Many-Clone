@@ -13,6 +13,7 @@ public class QuestionHandler : MonoBehaviour
     [SerializeField] private Answer _answers;
     [SerializeField] private AnswerPlacementView _answersPlacementsView;
     [SerializeField] private List<Character> _characters = new List<Character>();
+    [SerializeField] private Water _water;
 
     public event UnityAction Answered;
     public event UnityAction PlayerDropped;
@@ -31,6 +32,9 @@ public class QuestionHandler : MonoBehaviour
     private const string _secondAnswerText = "Second";
     private const string _thirdAnswerText = "Third";
     private const string _fourthAnswerText = "Fourth";
+    private float _secondAnswerFallDistance = 1f;
+    private float _thirdAnswerFallDistance = 1.5f;
+    private float _fourthAnswerFallDistance = 2f;
 
     private void Start()
     {
@@ -44,12 +48,14 @@ public class QuestionHandler : MonoBehaviour
     {
         _answerReader.SubmitButtonClicked += OnSubmitButtonClicked;
         _questionWriter.Written += OnQuestionWritten;
+        _water.PlayerDropped += OnPlayerDropped;
     }
 
     private void OnDisable()
     {
         _answerReader.SubmitButtonClicked -= OnSubmitButtonClicked;
         _questionWriter.Written -= OnQuestionWritten;
+        _water.PlayerDropped -= OnPlayerDropped;
     }
 
     private void OnQuestionWritten()
@@ -66,9 +72,6 @@ public class QuestionHandler : MonoBehaviour
 
     private IEnumerator CompareAnswers()
     {
-        bool isSecondIsLastAnswer = false;
-        bool isThirdIsLastAnswer = false;
-        bool isFourthIsLastAnswer = false;
         yield return new WaitForSeconds(0.5f);
         List<Character> charactersWithCorrectAnswers = new List<Character>();
         List<Character> charactersWithClosestAnswers = new List<Character>();
@@ -159,12 +162,14 @@ public class QuestionHandler : MonoBehaviour
                 }
             }
 
+            /*
             if (charactersWithFourthAnswers.Count != 0)
                 isFourthIsLastAnswer = true;
             else if (charactersWithThirdAnswers.Count != 0)
                 isThirdIsLastAnswer = true;
             else if (charactersWithSecondAnswers.Count != 0)
                 isSecondIsLastAnswer = true;
+            */
         }
 
         yield return new WaitForSeconds(1f);
@@ -172,9 +177,9 @@ public class QuestionHandler : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         ShowAnswerResults(charactersWithCorrectAnswers, _correctAnswerText, _correctAnswerColor);
         ShowAnswerResults(charactersWithClosestAnswers, _closestAnswerText, _closestAnswerColor);
-        ShowAnswerResults(charactersWithSecondAnswers, _secondAnswerText, _secondAnswerColor, isSecondIsLastAnswer);
-        ShowAnswerResults(charactersWithThirdAnswers, _thirdAnswerText, _thirdAnswerColor, isThirdIsLastAnswer);
-        ShowAnswerResults(charactersWithFourthAnswers, _fourthAnswerText, _fourthAnswerColor, isFourthIsLastAnswer);
+        ShowAnswerResults(charactersWithSecondAnswers, _secondAnswerText, _secondAnswerColor, isSecondAnswer: true);
+        ShowAnswerResults(charactersWithThirdAnswers, _thirdAnswerText, _thirdAnswerColor, isThirdAnswer: true);
+        ShowAnswerResults(charactersWithFourthAnswers, _fourthAnswerText, _fourthAnswerColor, isFourthAnswer: true);
         yield return new WaitForSeconds(1f);
         _answersPlacementsView.Hide();
 
@@ -184,7 +189,7 @@ public class QuestionHandler : MonoBehaviour
             Answered?.Invoke();
     }
 
-    private void ShowAnswerResults(List<Character> characters, string placementText, Color textColor, bool isLastAnswer = false)
+    private void ShowAnswerResults(List<Character> characters, string placementText, Color textColor, bool isSecondAnswer = false, bool isThirdAnswer = false, bool isFourthAnswer = false)
     {
         if (characters.Count > 0)
         {
@@ -193,18 +198,26 @@ public class QuestionHandler : MonoBehaviour
                 Transform characterPosition = character.gameObject.transform.GetChild(character.gameObject.transform.childCount - 1).transform;
                 _answersPlacementsView.Show(placementText, characterPosition, textColor);
 
-                if (isLastAnswer)
-                {
-                    character.Drop();
-                    _characters.Remove(character);
-
-                    if (character.gameObject.TryGetComponent<Player>(out Player player))
-                    {
-                        PlayerDropped?.Invoke();
-                        _isPlayerDropped = true;
-                    }
-                }
+                if (isSecondAnswer)
+                    character.Fall(_secondAnswerFallDistance);
+                else if (isThirdAnswer)
+                    character.Fall(_thirdAnswerFallDistance);
+                else if (isFourthAnswer)
+                    character.Fall(_fourthAnswerFallDistance);
             }
+        }
+    }
+
+    private void OnPlayerDropped(GameObject gameObject)
+    {
+        gameObject.TryGetComponent<Character>(out Character character);
+        character.Drop();
+        _characters.Remove(character);
+
+        if (character.gameObject.TryGetComponent<Player>(out Player player))
+        {
+            PlayerDropped?.Invoke();
+            _isPlayerDropped = true;
         }
     }
 }

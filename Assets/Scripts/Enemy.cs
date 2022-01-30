@@ -6,9 +6,9 @@ public class Enemy : Character
 {
     [SerializeField] private QuestionHandler _questionHandler;
     [SerializeField] private FlagList _flagList;
+    [SerializeField] private NamesList _namesList;
 
     private float _randomAnswerRange = 1.5f; //враги отвечают +-50% от правильного ответа
-    private List<string> _names = new List<string>();
 
     private void OnEnable()
     {
@@ -31,19 +31,7 @@ public class Enemy : Character
 
     private void SetName()
     {
-        //Именя брать из файла?
-        _names.Add("John");
-        _names.Add("Marsi");
-        _names.Add("Harry");
-        _names.Add("George");
-        _names.Add("Charles");
-        _names.Add("Lewis");
-        _names.Add("Max");
-        _names.Add("Anna");
-        _names.Add("Carlos");
-        _names.Add("Lando");
-        _names.Add("Daniel");
-        _name = _names[Random.Range(0, _names.Count)];
+        _name = _namesList.GetName();
     }
     
     private void SetFlag()
