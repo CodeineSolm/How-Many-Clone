@@ -161,15 +161,6 @@ public class QuestionHandler : MonoBehaviour
                         charactersWithFourthAnswers.Add(character);
                 }
             }
-
-            /*
-            if (charactersWithFourthAnswers.Count != 0)
-                isFourthIsLastAnswer = true;
-            else if (charactersWithThirdAnswers.Count != 0)
-                isThirdIsLastAnswer = true;
-            else if (charactersWithSecondAnswers.Count != 0)
-                isSecondIsLastAnswer = true;
-            */
         }
 
         yield return new WaitForSeconds(1f);

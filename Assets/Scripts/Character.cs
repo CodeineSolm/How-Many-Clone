@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    [SerializeField] protected GameObject _characterPrefab;
     [SerializeField] protected GameObject _container;
     [SerializeField] protected GameObject _answerContainer;
     [SerializeField] protected AnswerView _answerView;
@@ -13,8 +12,8 @@ public class Character : MonoBehaviour
     protected int _answer;
     protected string _name;
     protected Sprite _flag;
-    private float _placementTextShiftX = 0.5f;
-    private float _placementTextShiftY = 1.2f;
+    private float _placementTextShiftX = 0.35f;
+    private float _placementTextShiftY = 0.7f;
     private float _flagImageShiftX = -0.33f;
     private GameObject _playerModel;
 
@@ -54,14 +53,6 @@ public class Character : MonoBehaviour
 
     protected void Awake()
     {
-        Spawn();
         _answerContainer.gameObject.SetActive(true);
-    }
-
-    protected void Spawn()
-    {
-        var characterTemp = Instantiate(_characterPrefab, new Vector3(_container.transform.position.x, _container.transform.position.y,
-            _container.transform.position.z), Quaternion.Euler(new Vector3(0, 180, 0)), _container.transform);
-        _playerModel = gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject;
     }
 }
