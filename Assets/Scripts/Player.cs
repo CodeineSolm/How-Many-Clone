@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class Player : Character
 {
     [SerializeField] private int _maxHealth;
-    [SerializeField] private AnswerReader _answerReader;
     [SerializeField] private QuestionHandler _questionHandler;
     [SerializeField] private GameController _gameManager;
     [SerializeField] private Sprite _playerIcon;
@@ -32,7 +31,6 @@ public class Player : Character
 
     private void OnEnable()
     {
-        _answerReader.SubmitButtonClicked += OnSubmitButtonClick;
         _gameManager.PlayerSurvived += OnPlayerSurvived;
         _questionHandler.PlayerDropped += OnPlayerDropped;
 
@@ -49,14 +47,8 @@ public class Player : Character
 
     private void OnDisable()
     {
-        _answerReader.SubmitButtonClicked -= OnSubmitButtonClick;
         _gameManager.PlayerSurvived -= OnPlayerSurvived;
         _questionHandler.PlayerDropped -= OnPlayerDropped;
-    }
-
-    private void OnSubmitButtonClick(int playerAnswer)
-    {
-        _answer = playerAnswer;
     }
 
     private void OnPlayerSurvived(int reward)
