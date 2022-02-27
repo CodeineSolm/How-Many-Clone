@@ -47,14 +47,14 @@ public class QuestionHandler : MonoBehaviour
     private void OnEnable()
     {
         _questionWriter.Written += OnQuestionWritten;
-        _water.PlayerDropped += OnPlayerDropped;
+        _water.CharacterDropped += OnCharacterDropped;
         _mouseEvent.PointerUp += OnPointerUp;
     }
 
     private void OnDisable()
     {
         _questionWriter.Written -= OnQuestionWritten;
-        _water.PlayerDropped -= OnPlayerDropped;
+        _water.CharacterDropped -= OnCharacterDropped;
         _mouseEvent.PointerUp -= OnPointerUp;
     }
 
@@ -174,7 +174,7 @@ public class QuestionHandler : MonoBehaviour
         yield return new WaitForSeconds(1f);
         _answersPlacementsView.Hide();
 
-        if (_characters.Count == 1)
+        if (_characters.Count == 1 && _characters[0].GetComponent<Player>() != null)
             PlayerSurvived?.Invoke();
         else if (_isPlayerDropped == false)
             Answered?.Invoke();
@@ -199,9 +199,9 @@ public class QuestionHandler : MonoBehaviour
         }
     }
 
-    private void OnPlayerDropped(GameObject gameObject)
+    private void OnCharacterDropped(GameObject gameObject)
     {
-        gameObject.TryGetComponent<Character>(out Character character);
+        gameObject.transform.parent.TryGetComponent<Character>(out Character character);
         character.Drop();
         _characters.Remove(character);
 

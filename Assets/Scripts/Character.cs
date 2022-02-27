@@ -1,3 +1,4 @@
+using Obi;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -8,6 +9,8 @@ public class Character : MonoBehaviour
     [SerializeField] protected GameObject _nameContainer;
     [SerializeField] protected NameView _nameViewTemplate;
     [SerializeField] protected CharacterFlagView _flagViewTemplate;
+    [SerializeField] private Rigidbody _characterRigidbody;
+    [SerializeField] private ObiRope _rope;
 
     protected int _answer;
     protected string _name;
@@ -15,7 +18,6 @@ public class Character : MonoBehaviour
     private float _placementTextShiftX = 0.35f;
     private float _placementTextShiftY = 0.7f;
     private float _flagImageShiftX = -0.33f;
-    private GameObject _playerModel;
 
     public int GetAnswer()
     {
@@ -25,11 +27,13 @@ public class Character : MonoBehaviour
     public void Drop()
     {
         _answerContainer.gameObject.SetActive(false);
-        _playerModel.transform.position = new Vector3(_playerModel.transform.position.x, _playerModel.transform.position.y - 10f, _playerModel.transform.position.z);
+        var ropeAttachments = _rope.GetComponents(typeof(ObiParticleAttachment));
+        Destroy(ropeAttachments[ropeAttachments.Length - 1]);
     }
 
     public void Fall(float fallDistance)
     {
+        _characterRigidbody.isKinematic = false;
         //_playerModel.transform.position = new Vector3(_playerModel.transform.position.x, _playerModel.transform.position.y - fallDistance, _playerModel.transform.position.z);
         Debug.Log(_name + " is dropped by " + fallDistance + " cm");
     }
