@@ -235,7 +235,7 @@ namespace GestureRecognizer {
 			return SetVbo(new[] { v1, v2, v3, v4 }, uvs);
 		}
 
-		protected UIVertex[] SetVbo(Vector2[] vertices, Vector2[] uvs) {
+        protected UIVertex[] SetVbo(Vector2[] vertices, Vector2[] uvs) {
 			UIVertex[] vbo = new UIVertex[4];
 			for (int i = 0; i < vertices.Length; i++) {
 				var vert = UIVertex.simpleVert;

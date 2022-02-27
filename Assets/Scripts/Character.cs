@@ -30,7 +30,8 @@ public class Character : MonoBehaviour
 
     public void Fall(float fallDistance)
     {
-        _playerModel.transform.position = new Vector3(_playerModel.transform.position.x, _playerModel.transform.position.y - fallDistance, _playerModel.transform.position.z);
+        //_playerModel.transform.position = new Vector3(_playerModel.transform.position.x, _playerModel.transform.position.y - fallDistance, _playerModel.transform.position.z);
+        Debug.Log(_name + " is dropped by " + fallDistance + " cm");
     }
 
     public void ShowAnswer()

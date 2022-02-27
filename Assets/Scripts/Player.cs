@@ -23,6 +23,7 @@ public class Player : Character
 
     private void Start()
     {
+        _answer = 0;
         ShowPlayerArrow();
 
         if (_currentHealth <= 0 || _currentHealth >= _maxHealth)

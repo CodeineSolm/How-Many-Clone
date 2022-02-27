@@ -8,12 +8,12 @@ using UnityEngine.Events;
 public class QuestionHandler : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _questionTextField;
-    [SerializeField] private AnswerReader _answerReader;
     [SerializeField] private QuestionWriter _questionWriter;
     [SerializeField] private Answer _answers;
     [SerializeField] private AnswerPlacementView _answersPlacementsView;
     [SerializeField] private List<Character> _characters = new List<Character>();
     [SerializeField] private Water _water;
+    [SerializeField] private MouseEvent _mouseEvent;
 
     public event UnityAction Answered;
     public event UnityAction PlayerDropped;
@@ -46,28 +46,28 @@ public class QuestionHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        _answerReader.SubmitButtonClicked += OnSubmitButtonClicked;
         _questionWriter.Written += OnQuestionWritten;
         _water.PlayerDropped += OnPlayerDropped;
+        _mouseEvent.PointerUp += OnPointerUp;
     }
 
     private void OnDisable()
     {
-        _answerReader.SubmitButtonClicked -= OnSubmitButtonClicked;
         _questionWriter.Written -= OnQuestionWritten;
         _water.PlayerDropped -= OnPlayerDropped;
+        _mouseEvent.PointerUp -= OnPointerUp;
+    }
+
+    private void OnPointerUp()
+    {
+        _questionTextField.text = _correctAnswer.ToString();
+        PlayerAnswered?.Invoke(_correctAnswer);
+        StartCoroutine(CompareAnswers());
     }
 
     private void OnQuestionWritten()
     {
         _correctAnswer = _questionWriter.GetCorrectAnswer();
-    }
-
-    private void OnSubmitButtonClicked(int playerAnswer)
-    {
-        _questionTextField.text = _correctAnswer.ToString();
-        PlayerAnswered?.Invoke(_correctAnswer);
-        StartCoroutine(CompareAnswers());
     }
 
     private IEnumerator CompareAnswers()

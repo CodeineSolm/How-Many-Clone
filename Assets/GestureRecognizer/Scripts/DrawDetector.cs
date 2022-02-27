@@ -180,7 +180,6 @@ namespace GestureRecognizer {
 
 			yield return null;
 		}
-
-	}
+    }
 
 }
