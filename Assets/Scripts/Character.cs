@@ -11,13 +11,13 @@ public class Character : MonoBehaviour
     [SerializeField] protected CharacterFlagView _flagViewTemplate;
     [SerializeField] private Rigidbody _characterRigidbody;
     [SerializeField] private ObiRope _rope;
+    [SerializeField] private float _placementTextShiftX = 0.35f;
+    [SerializeField] private float _placementTextShiftY = 0.7f;
+    [SerializeField] private float _flagImageShiftX = -0.33f;
 
     protected int _answer;
     protected string _name;
     protected Sprite _flag;
-    private float _placementTextShiftX = 0.35f;
-    private float _placementTextShiftY = 0.7f;
-    private float _flagImageShiftX = -0.33f;
 
     public int GetAnswer()
     {
@@ -31,11 +31,9 @@ public class Character : MonoBehaviour
         Destroy(ropeAttachments[ropeAttachments.Length - 1]);
     }
 
-    public void Fall(float fallDistance)
+    public void Fall()
     {
         _characterRigidbody.isKinematic = false;
-        //_playerModel.transform.position = new Vector3(_playerModel.transform.position.x, _playerModel.transform.position.y - fallDistance, _playerModel.transform.position.z);
-        Debug.Log(_name + " is dropped by " + fallDistance + " cm");
     }
 
     public void ShowAnswer()

@@ -5,8 +5,8 @@ public class CameraZoom : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private QuestionHandler _questionHandler;
     [SerializeField] private float _zoomSpeed = 0.005f;
-    [SerializeField] private float _zoomShiftByY = 1f;
-    [SerializeField] private float _zoomShiftByZ = -7f;
+    [SerializeField] private float _zoomTargetY = 1.5f;
+    [SerializeField] private float _zoomTargetZ = 3.5f;
     
     private bool _isActive;
     private Camera _camera;
@@ -15,7 +15,7 @@ public class CameraZoom : MonoBehaviour
 
     public void Zoom()
     {
-        Vector3 target = new Vector3(_player.transform.position.x, _player.transform.position.y + _zoomShiftByY, _player.transform.position.z + _zoomShiftByZ);
+        Vector3 target = new Vector3(_player.transform.position.x, _zoomTargetY, _zoomTargetZ);
         _camera.transform.position = Vector3.Lerp(_camera.transform.position, target, _zoomSpeed);
     }
 
@@ -30,9 +30,7 @@ public class CameraZoom : MonoBehaviour
     private void Update()
     {
         if (_isActive)
-        {
             Zoom();
-        }
     }
 
     private void Reset()

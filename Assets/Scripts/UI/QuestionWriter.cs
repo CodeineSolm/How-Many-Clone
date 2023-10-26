@@ -38,7 +38,6 @@ public class QuestionWriter : MonoBehaviour
 
     private void TakeQuestions()
     {
-        //Тут поидее должно браться несколько рандомных вопросов с файла или базы данных?
         _questions.Add(new Question("How many signs are there in Zodiac?", 12));
         _questions.Add(new Question("How many players are on a basketball team?", 5));
         _questions.Add(new Question("How many stars are on the European Union flag?", 12));

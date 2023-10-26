@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FrictionJoint3D : MonoBehaviour {
@@ -19,7 +17,4 @@ public class FrictionJoint3D : MonoBehaviour {
         Rigidbody.velocity = Rigidbody.velocity * (1 - Friction);
         Rigidbody.angularVelocity = Rigidbody.angularVelocity * (1 - Friction);
     }
-
-
-
 }

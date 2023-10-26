@@ -1,20 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Player : Character
 {
-    [SerializeField] private int _maxHealth;
-    [SerializeField] private QuestionHandler _questionHandler;
     [SerializeField] private GameController _gameManager;
     [SerializeField] private Sprite _playerIcon;
     [SerializeField] private GameObject _playerArrowContainer;
     [SerializeField] private GameObject _playerArrowViewPrefab;
+    [SerializeField] private AnswerInput _answerInput;
+    [SerializeField] private QuestionHandler _questionHandler;
 
-    public static string Name;
-    public static Image Flag;
-
+    private GameObject _arrowView;
     private int _money;
-    private int _currentHealth;
 
     public int ShowMoney()
     {
@@ -24,48 +20,53 @@ public class Player : Character
     private void Start()
     {
         _answer = 0;
-        ShowPlayerArrow();
-
-        if (_currentHealth <= 0 || _currentHealth >= _maxHealth)
-            _currentHealth = _maxHealth;
+        ArrowInstantiate();
     }
 
     private void OnEnable()
     {
-        _gameManager.PlayerSurvived += OnPlayerSurvived;
-        _questionHandler.PlayerDropped += OnPlayerDropped;
-
-        if (Name == null)
+        if (PlayerSettingsController.States.Name == null)
             _name = "Player";
         else
-            _name = Name;
+            _name = PlayerSettingsController.States.Name;
 
-        if (Flag == null)
+        if (PlayerSettingsController.States.Flag == null)
             _flag = _playerIcon;
         else
-            _flag = Flag.sprite;
+            _flag = PlayerSettingsController.States.Flag;
+
+        _gameManager.PlayerSurvived += OnPlayerSurvived;
+        _answerInput.PlayerInputAnswer += OnPlayerInputAnswer;
+        _questionHandler.PlayerDropped += OnPlayerDropped;
     }
 
     private void OnDisable()
     {
         _gameManager.PlayerSurvived -= OnPlayerSurvived;
+        _answerInput.PlayerInputAnswer -= OnPlayerInputAnswer;
         _questionHandler.PlayerDropped -= OnPlayerDropped;
+    }
+
+    private void OnPlayerInputAnswer(int value)
+    {
+        _answer = value;
     }
 
     private void OnPlayerSurvived(int reward)
     {
         _money += reward;
+        _arrowView.SetActive(false);
+    }
+
+    private void ArrowInstantiate()
+    {
+        Transform characterPosition = _container.gameObject.transform.GetChild(_container.gameObject.transform.childCount - 1).transform;
+        _arrowView = Instantiate(_playerArrowViewPrefab, new Vector3(characterPosition.position.x, characterPosition.position.y, characterPosition.position.z), Quaternion.identity,
+            _playerArrowContainer.transform);
     }
 
     private void OnPlayerDropped()
     {
-        _currentHealth--;
-    }
-
-    private void ShowPlayerArrow()
-    {
-        Transform characterPosition = _container.gameObject.transform.GetChild(_container.gameObject.transform.childCount - 1).transform;
-        var arrowView = Instantiate(_playerArrowViewPrefab, new Vector3(characterPosition.position.x, characterPosition.position.y, characterPosition.position.z), Quaternion.identity,
-            _playerArrowContainer.transform);
+        _arrowView.SetActive(false);
     }
 }

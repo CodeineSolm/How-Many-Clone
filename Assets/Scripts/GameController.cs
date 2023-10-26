@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,6 +13,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private float _freezeTimeDelay;
     [SerializeField] private float _showSurvivedScreenDelay;
     [SerializeField] private float _showFailedScreenDelay;
+    [SerializeField] private QuestionWriter _questionWriter;
+    [SerializeField] private Names _names;
 
     public static string PlayerName;
     public event UnityAction<int> PlayerSurvived;
@@ -30,26 +33,14 @@ public class GameController : MonoBehaviour
 
     private void OnPlayerDropped()
     {
-        Invoke("ShowFailedScreen", _showFailedScreenDelay);
+        StartCoroutine(ShowFailedScreen(_showFailedScreenDelay));
     }
 
     private void OnPlayerSurvived()
     {
-        Invoke("ShowSurvivedScreen", _showSurvivedScreenDelay);
-    }
-
-    private void ShowSurvivedScreen()
-    {
-        PlayerSurvived.Invoke(_surviveReward);
-        SpawnSurvivedEffect();
-        _survivedScreen.Show();
-        _survivedScreen.ShowPlayerMoney();
-    }
-
-    private void ShowFailedScreen()
-    {
-        _failedScreen.Show();
-        Invoke("FreezeTime", _freezeTimeDelay);
+        StartCoroutine(ShowSurvivedScreen(_showSurvivedScreenDelay));
+        _questionWriter.gameObject.SetActive(false);
+        _names.gameObject.SetActive(false);
     }
 
     private void FreezeTime()
@@ -60,5 +51,22 @@ public class GameController : MonoBehaviour
     private void SpawnSurvivedEffect()
     {
         var spwanObj = Instantiate(_confettiPrefab, new Vector3(_canvas.transform.position.x, _canvas.transform.position.y, _canvas.transform.position.z - 5f), Quaternion.identity);
+    }
+
+    private IEnumerator ShowFailedScreen(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        _failedScreen.Show();
+        yield return new WaitForSeconds(_freezeTimeDelay);
+        Time.timeScale = 0;
+    }
+
+    private IEnumerator ShowSurvivedScreen(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        PlayerSurvived.Invoke(_surviveReward);
+        SpawnSurvivedEffect();
+        _survivedScreen.Show();
+        _survivedScreen.ShowPlayerMoney();
     }
 }

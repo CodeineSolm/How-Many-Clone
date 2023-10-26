@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SharkMover : MonoBehaviour
@@ -24,9 +22,9 @@ public class SharkMover : MonoBehaviour
     private void Update()
     {
         Transform target = _points[_currentPoint];
-        transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
         var direction = (target.position - transform.position).normalized;
         var lookRotation = Quaternion.LookRotation(direction);
+        transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * _rotationSpeed);
 
         if (transform.position == target.position)
@@ -34,9 +32,7 @@ public class SharkMover : MonoBehaviour
             _currentPoint++;
 
             if (_currentPoint >= _points.Length)
-            {
                 _currentPoint = 0;
-            }
         }
     }
 }

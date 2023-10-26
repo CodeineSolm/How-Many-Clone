@@ -23,7 +23,6 @@ public class DistanceJoint3D : MonoBehaviour {
 
     void FixedUpdate()
     {
-
         var connection = Rigidbody.position - ConnectedRigidbody.position;
         var distanceDiscrepancy = Distance - connection.magnitude;
 
@@ -32,7 +31,5 @@ public class DistanceJoint3D : MonoBehaviour {
         var velocityTarget = connection + (Rigidbody.velocity + Physics.gravity * Spring);
         var projectOnConnection = Vector3.Project(velocityTarget, connection);
         Rigidbody.velocity = (velocityTarget - projectOnConnection) / (1 + Damper * Time.fixedDeltaTime);
-
-
     }
 }

@@ -13,7 +13,7 @@ public class QuestionHandler : MonoBehaviour
     [SerializeField] private AnswerPlacementView _answersPlacementsView;
     [SerializeField] private List<Character> _characters = new List<Character>();
     [SerializeField] private Water _water;
-    [SerializeField] private MouseEvent _mouseEvent;
+    [SerializeField] private AnswerInput _answerInput;
 
     public event UnityAction Answered;
     public event UnityAction PlayerDropped;
@@ -32,9 +32,6 @@ public class QuestionHandler : MonoBehaviour
     private const string _secondAnswerText = "Second";
     private const string _thirdAnswerText = "Third";
     private const string _fourthAnswerText = "Fourth";
-    private float _secondAnswerFallDistance = 1f;
-    private float _thirdAnswerFallDistance = 1.5f;
-    private float _fourthAnswerFallDistance = 2f;
 
     private void Start()
     {
@@ -48,17 +45,17 @@ public class QuestionHandler : MonoBehaviour
     {
         _questionWriter.Written += OnQuestionWritten;
         _water.CharacterDropped += OnCharacterDropped;
-        _mouseEvent.PointerUp += OnPointerUp;
+        _answerInput.PlayerInputAnswer += OnPlayerInputAnswer;
     }
 
     private void OnDisable()
     {
         _questionWriter.Written -= OnQuestionWritten;
         _water.CharacterDropped -= OnCharacterDropped;
-        _mouseEvent.PointerUp -= OnPointerUp;
+        _answerInput.PlayerInputAnswer -= OnPlayerInputAnswer;
     }
 
-    private void OnPointerUp()
+    private void OnPlayerInputAnswer(int value)
     {
         _questionTextField.text = _correctAnswer.ToString();
         PlayerAnswered?.Invoke(_correctAnswer);
@@ -189,12 +186,21 @@ public class QuestionHandler : MonoBehaviour
                 Transform characterPosition = character.gameObject.transform.GetChild(character.gameObject.transform.childCount - 1).transform;
                 _answersPlacementsView.Show(placementText, characterPosition, textColor);
 
-                if (isSecondAnswer)
-                    character.Fall(_secondAnswerFallDistance);
-                else if (isThirdAnswer)
-                    character.Fall(_thirdAnswerFallDistance);
-                else if (isFourthAnswer)
-                    character.Fall(_fourthAnswerFallDistance);
+                switch (_characters.Count)
+                {
+                    case 2:
+                        if (isSecondAnswer)
+                            character.Fall();
+                        break;
+                    case 3:
+                        if (isThirdAnswer)
+                            character.Fall();
+                        break;
+                    case 4:
+                        if (isFourthAnswer)
+                            character.Fall();
+                        break;
+                }
             }
         }
     }

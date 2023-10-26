@@ -7,13 +7,13 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private TMP_InputField _playerName;
     [SerializeField] private Image _flagImage;
 
-    public void SetPlayerName()
+    public void SetPlayerSettings()
     {
         if (_playerName.text == "")
-            Player.Name = "Player";
+            PlayerSettingsController.States.Name = "Player";
         else
-            Player.Name = _playerName.text;
+            PlayerSettingsController.States.Name = _playerName.text;
 
-        Player.Flag = _flagImage;
+        PlayerSettingsController.States.Flag = _flagImage.sprite;
     }
 }
